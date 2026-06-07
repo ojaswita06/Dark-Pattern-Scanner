@@ -37,7 +37,7 @@ Detected dark pattern highlighted in real-time by the Chrome extension.
 
 Chrome extension popup showing scanning and detection results.
 
-![Extension Interface](screenshots/chrome_extensions_.png)
+![Extension Interface](screenshots/chrome_extension.png)
 
 
 ## Model Performance
