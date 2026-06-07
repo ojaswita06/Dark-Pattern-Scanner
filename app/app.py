@@ -7,17 +7,10 @@ app = FastAPI(title="DarkPatternScanner API")
 
 templates = Jinja2Templates(directory="app/templates")
 
-
-# -----------------------------
-# Request Schema
-# -----------------------------
 class TextInput(BaseModel):
     text: str
 
 
-# -----------------------------
-# Home Page
-# -----------------------------
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     return templates.TemplateResponse(
@@ -25,19 +18,15 @@ async def home(request: Request):
         {"request": request}
     )
 
-
-# -----------------------------
-# Prediction Endpoint
-# -----------------------------
+#prediction endpoint
 @app.post("/predict")
 async def predict(data: TextInput):
 
     text = data.text
 
-    # --------------------------------------------------
-    # Temporary dummy prediction
-    # Replace with BERT inference later
-    # --------------------------------------------------
+    #temporary dummy prediction
+    #replacing with BERT inference later
+
     prediction = "unknown"
     confidence = 0.0
 

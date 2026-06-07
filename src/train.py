@@ -15,24 +15,16 @@ from sklearn.metrics import accuracy_score, f1_score
 
 from config import *
 
-# ------------------------
-# Load Data
-# ------------------------
+#loading data
 
 train_df = pd.read_csv(TRAIN_PATH)
 val_df = pd.read_csv(VAL_PATH)
 
-# ------------------------
-# Convert to HF Dataset
-# ------------------------
-
+#converting to HF dataset
 train_dataset = Dataset.from_pandas(train_df)
 val_dataset = Dataset.from_pandas(val_df)
 
-# ------------------------
-# Tokenizer
-# ------------------------
-
+#tokenizer
 tokenizer = BertTokenizer.from_pretrained(MODEL_NAME)
 
 def tokenize_function(examples):
@@ -46,16 +38,12 @@ def tokenize_function(examples):
 train_dataset = train_dataset.map(tokenize_function, batched=True)
 val_dataset = val_dataset.map(tokenize_function, batched=True)
 
-# ------------------------
-# Rename label column
-# ------------------------
+#renaming label column
 
 train_dataset = train_dataset.rename_column("label", "labels")
 val_dataset = val_dataset.rename_column("label", "labels")
 
-# ------------------------
-# PyTorch Format
-# ------------------------
+#PyTorch format
 
 train_dataset.set_format(
     type="torch",
@@ -67,18 +55,14 @@ val_dataset.set_format(
     columns=["input_ids", "attention_mask", "labels"]
 )
 
-# ------------------------
-# Load Model
-# ------------------------
+#loading model
 
 model = BertForSequenceClassification.from_pretrained(
     MODEL_NAME,
     num_labels=NUM_LABELS
 )
 
-# ------------------------
-# Metrics
-# ------------------------
+#metrics
 
 def compute_metrics(eval_pred):
 
@@ -99,9 +83,7 @@ def compute_metrics(eval_pred):
         "f1": f1
     }
 
-# ------------------------
-# Training Arguments
-# ------------------------
+#training arguments
 
 training_args = TrainingArguments(
     output_dir="results",
@@ -116,9 +98,7 @@ training_args = TrainingArguments(
     metric_for_best_model="f1"
 )
 
-# ------------------------
-# Trainer
-# ------------------------
+#trainer
 
 trainer = Trainer(
     model=model,
@@ -128,15 +108,10 @@ trainer = Trainer(
     compute_metrics=compute_metrics
 )
 
-# ------------------------
-# Train
-# ------------------------
-
+#training
 trainer.train()
 
-# ------------------------
-# Save Model
-# ------------------------
+#saving mdoel
 
 trainer.save_model(MODEL_SAVE_PATH)
 

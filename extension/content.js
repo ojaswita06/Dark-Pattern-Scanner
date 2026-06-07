@@ -1,13 +1,11 @@
 console.log("✅ Dark Pattern Scanner loaded");
 
-// Store already-scanned texts
+//storing already scanned texts
 const scannedTexts = new Set();
 
 let checkedCount = 0;
 
-// ----------------------------
-// Send text to backend
-// ----------------------------
+//sending text to backend
 async function checkDarkPattern(text) {
     try {
         const response = await fetch("http://localhost:8000/predict", {
@@ -30,24 +28,22 @@ async function checkDarkPattern(text) {
     }
 }
 
-// ----------------------------
-// Filter useless elements
-// ----------------------------
+//filtering useless elements
 function isRelevantElement(el, text) {
 
-    // Hidden elements
+    //hidden elements
     if (!el.offsetParent) return false;
 
-    // Too short
+    //too short
     if (text.length < 15) return false;
 
-    // Too long
+    //too long
     if (text.length > 150) return false;
 
-    // Huge containers
+    //huge containers
     if (el.children.length > 3) return false;
 
-    // Ignore prices
+    //ignoring prices
     if (/₹|\$|€|£/.test(text)) return false;
 
     // Ignore keyboard shortcut text
@@ -61,7 +57,7 @@ function isRelevantElement(el, text) {
         return false;
     }
 
-    // Ignore common navigation items
+    //ignoring common navigation items
     const ignoreWords = [
         "home",
         "cart",
@@ -80,9 +76,7 @@ function isRelevantElement(el, text) {
     return true;
 }
 
-// ----------------------------
-// Highlight dark pattern
-// ----------------------------
+//highlighting dark patterns
 function highlightElement(el, confidence) {
 
     el.style.outline = "3px solid red";
@@ -92,9 +86,7 @@ function highlightElement(el, confidence) {
         `Dark Pattern Detected (${Math.round(confidence * 100)}%)`;
 }
 
-// ----------------------------
-// Scan page
-// ----------------------------
+//scanning page
 async function scanPage() {
 
     const elements = document.querySelectorAll(
@@ -112,7 +104,7 @@ async function scanPage() {
         if (!isRelevantElement(el, text))
             continue;
 
-        // Avoid duplicate requests
+        //avoiding duplicate requests
         if (scannedTexts.has(text))
             continue;
 
@@ -134,7 +126,7 @@ async function scanPage() {
         ) {
 
             console.log(
-                `🚨 Dark Pattern Detected (${Math.round(result.confidence * 100)}%)`,
+                `Dark Pattern Detected (${Math.round(result.confidence * 100)}%)`,
                 text
             );
 
@@ -145,9 +137,7 @@ async function scanPage() {
     console.log(`Scan complete. Checked ${checkedCount} elements.`);
 }
 
-// ----------------------------
-// Start scan
-// ----------------------------
+//starting to scan
 window.addEventListener("load", () => {
 
     console.log("🚀 Starting scan in 2 seconds...");

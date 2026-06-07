@@ -19,7 +19,7 @@ from sklearn.metrics import (
 
 from config import *
 
-# Load validation data
+#loading validation data
 val_df = pd.read_csv(VAL_PATH)
 
 dataset = Dataset.from_pandas(val_df)

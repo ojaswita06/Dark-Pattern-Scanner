@@ -1,4 +1,7 @@
-results/
-models/
+venv/
 __pycache__/
 *.pyc
+.env
+models/
+results/
+.DS_Store

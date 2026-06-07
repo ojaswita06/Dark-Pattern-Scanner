@@ -4,9 +4,7 @@ from transformers import BertTokenizer, BertForSequenceClassification
 
 from src.config import MODEL_SAVE_PATH, MODEL_NAME
 
-# ------------------------
-# Load model + tokenizer
-# ------------------------
+#loading model+tokenizer
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -17,19 +15,14 @@ model.to(device)
 model.eval()
 
 
-# ------------------------
-# Label mapping (adjust if needed)
-# ------------------------
+#labelling mapping
 id2label = {
     0: "NOT_DARK_PATTERN",
     1: "DARK_PATTERN"
 }
 
 
-# ------------------------
-# Prediction function
-# ------------------------
-
+#prediction function
 def predict(text: str):
 
     inputs = tokenizer(
@@ -55,10 +48,7 @@ def predict(text: str):
         "confidence": float(probs[pred_id])
     }
 
-
-# ------------------------
-# Test run
-# ------------------------
+#testing run
 
 if __name__ == "__main__":
     sample = "Only 1 item left! Hurry before it sells out!"
